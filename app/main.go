@@ -1,13 +1,23 @@
 package main
 
 import (
+	"github.com/hashicorp/yamux"
 	"log"
 	"net"
 	"net/http"
 )
 
+func Listen(proxyAddr string) (net.Listener, error) {
+	conn, err := net.Dial("tcp", proxyAddr)
+	if err != nil {
+		return nil, err
+	}
+
+	return yamux.Client(conn, nil)
+}
+
 func main() {
-	l, err := net.Listen("tcp", ":8080")
+	l, err := Listen("127.0.0.1:8090")
 	if err != nil {
 		log.Fatal(err)
 	}
