@@ -2,17 +2,15 @@ package main
 
 import (
 	"github.com/hashicorp/yamux"
+	"io"
 	"log"
 	"net"
 	"net/http"
 )
 
 func Listen(proxyAddr string) (net.Listener, error) {
-	conn, err := net.Dial("tcp", proxyAddr)
-	if err != nil {
-		return nil, err
-	}
-
+	var conn io.ReadWriteCloser
+	// TODO create conn from HTTP/2
 	return yamux.Client(conn, nil)
 }
 
